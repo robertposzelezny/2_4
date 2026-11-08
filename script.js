@@ -8,6 +8,9 @@
   const add = document.getElementById("add");
   const popup = document.getElementById("popup");
   const json = document.getElementById("json");
+  const putBtn = document.getElementById("put");
+  const patchBtn = document.getElementById("patch");
+  const deleteBtn = document.getElementById("delete");
 
   const apiURL = "https://6ae8bf021a7b15aaa50f6d8d.mockapi.io/api/v1/users";
 
@@ -155,5 +158,44 @@
         html += "</table>";
         answer.innerHTML = html;
       });
+  });
+  putBtn.addEventListener("click", () => {
+    answer.innerHTML = "Processing...";
+    fetch("https://jsonplaceholder.typicode.com/posts/1", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        id: 1,
+        title: "tytul po aktualizacji",
+        body: "jakas nowa tresc",
+        userId: 1,
+      }),
+    })
+      .then((response) => response.json())
+      .then((post) => {
+        answer.innerHTML = `Zaktualizowano post ID=1: ${post.title}.`;
+      });
+  });
+
+  patchBtn.addEventListener("click", () => {
+    answer.innerHTML = "Processing...";
+    fetch("https://jsonplaceholder.typicode.com/posts/1", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ title: "tytul po patch" }),
+    })
+      .then((response) => response.json())
+      .then((post) => {
+        answer.innerHTML = `Post po patch: ${post.id} ${post.title} <br>${post.body} ${post.author}`;
+      });
+  });
+
+  deleteBtn.addEventListener("click", () => {
+    answer.innerHTML = "Processing...";
+    fetch("https://jsonplaceholder.typicode.com/posts/1", {
+      method: "DELETE",
+    }).then((response) => {
+      answer.innerHTML = `Post o id = 1 usuniety (status: ${response.status})`;
+    });
   });
 })();
